@@ -1,0 +1,14 @@
+node ('master') {
+    stage ('compile'){
+        sh 'echho compilation'
+    }
+    stage ('test'){
+        sh 'echo test'
+    }
+    stage ('pacakge'){
+        sh 'touch myfile.txt'
+    }
+    stage ('archiving'){
+        archiveArtifacts 'myfile.txt'
+    }
+}
