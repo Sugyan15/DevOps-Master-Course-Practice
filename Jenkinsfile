@@ -3,7 +3,6 @@ pipeline {
     environment {
         //be sure to replace "bhavukm" with your own Docker Hub username
         DOCKER_IMAGE_NAME = "sugyan15/train-schedule"
-        DOCKER = credentials ('dockerhub')
     }
     stages {
         stage('Build') {
@@ -20,11 +19,13 @@ pipeline {
                }
          }
         stage('Push Docker Image') {
-            steps {
-                 sh '''
-                  sudo docker login --username $DOCKER_USR --password $DOCKER_PSW
-                  sudo docker push sugyan15/train-schedule:20211112.$BUILD_NUMBER
-            '''
+             steps {
+                script {
+                    docker.withRegistry('https://registry.hub.docker.com', 'docker_hub_login') {
+                        app.push("${env.BUILD_NUMBER}")
+                        app.push("latest")
+                    }
+                }
             }
         }
         stage('CanaryDeploy') {
