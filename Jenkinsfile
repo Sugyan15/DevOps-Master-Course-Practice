@@ -2,7 +2,8 @@ pipeline {
     agent any
     environment {
         //be sure to replace "bhavukm" with your own Docker Hub username
-        DOCKER_IMAGE_NAME = "bhavukm/train-schedule"
+        DOCKER_IMAGE_NAME = "sugyan15/train-schedule"
+        DOCKER = credentials ('dockerhub')
     }
     stages {
         stage('Build') {
@@ -14,7 +15,7 @@ pipeline {
         }
         stage('Build Docker Image') {
             when {
-                branch 'master'
+                branch 'autodeploy'
             }
             steps {
                 script {
@@ -27,7 +28,7 @@ pipeline {
         }
         stage('Push Docker Image') {
             when {
-                branch 'master'
+                branch 'autodeploy'
             }
             steps {
                 script {
@@ -40,7 +41,7 @@ pipeline {
         }
         stage('CanaryDeploy') {
             when {
-                branch 'master'
+                branch 'autodeploy'
             }
             environment { 
                 CANARY_REPLICAS = 1
