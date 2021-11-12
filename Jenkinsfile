@@ -14,14 +14,10 @@ pipeline {
         }
         stage('Build Docker Image') {
             steps {
-                script {
-                    app = docker.build(DOCKER_IMAGE_NAME)
-                    app.inside {
-                        sh 'echo Hello, World!'
-                    }
-                }
-            }
-        }
+                sh 'sudo docker build -t sugyan15/train-schedule:20211112.$BUILD_NUMBER .'
+                sh 'echo Hello, World!'
+               }
+         }
         stage('Push Docker Image') {
             when {
                 branch 'master'
