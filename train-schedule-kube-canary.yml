@@ -37,6 +37,9 @@ spec:
         image: $DOCKER_IMAGE_NAME:$BUILD_NUMBER
         ports:
         - containerPort: 8082
+          targetPort: 8082
+        type: LoadBalancer
+        loadBalancerIP: 203.0.113.32
         livenessProbe:
           httpGet:
             path: /
